@@ -1,0 +1,18 @@
+;; should resemble the CFG builder test files used in the RREIL assembler tests
+
+format elf
+	
+section '.text' executable
+
+public main
+
+main:   
+    mov eax, 10
+loop_header:
+    sub eax, 1
+    cmp eax, 0
+    jl loop_header
+exit:
+    ret
+
+	

@@ -1,0 +1,38 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>bindead</groupId>
+    <artifactId>bindead</artifactId>
+    <version>0.0.80-SNAPSHOT</version>
+  </parent>
+  <artifactId>bindis</artifactId>
+  <name>Bindis</name>
+  <packaging>jar</packaging>
+
+  <description>
+    Disassembler frontend to translate bytes to a low-level instruction representation.
+  </description>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+  <dependencies>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>javalx</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>binparse</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>rreil</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
+</project>

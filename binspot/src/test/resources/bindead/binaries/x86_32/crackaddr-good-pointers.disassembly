@@ -1,0 +1,100 @@
+Analyzed native (x86-32) code (77 instructions):
+
+copy_it:
+080483ed:  55                      push   ebp
+080483ee:  89 e5                   mov    ebp, esp
+080483f0:  81 ec e0 00 00 00       sub    esp, 0xe0
+080483f6:  8b 45 08                mov    eax, DWORD PTR [ebp+0x8]      // *input
+080483f9:  89 45 fc                mov    DWORD PTR [ebp-0x4], eax      // p = input
+080483fc:  8d 85 23 ff ff ff       lea    eax, [ebp-0xdd]		// d = &localbuf
+08048402:  89 45 f8                mov    DWORD PTR [ebp-0x8], eax      // d		[currSP-12]
+08048405:  8d 85 23 ff ff ff       lea    eax, [ebp-0xdd]
+0804840b:  05 be 00 00 00          add    eax, 0xbe
+08048410:  89 45 f4                mov    DWORD PTR [ebp-0xc], eax      // upperlimit  	[currSP-16] = -35
+08048413:  c7 45 f0 00 00 00 00    mov    DWORD PTR [ebp-0x10], 0x0     // quotation	[currSP-20]
+0804841a:  c7 45 ec 00 00 00 00    mov    DWORD PTR [ebp-0x14], 0x0	// roundquote	[currSP-24]
+08048421:  eb 7f                   jmp    0x80484a2
+08048423:  80 7d eb 3c             cmp    DWORD PTR [ebp-0x15], 0x3c	// if ((c == '<') && (!quotation))
+08048427:  75 11                   jnz    0x804843a
+08048429:  83 7d f0 00             cmp    DWORD PTR [ebp-0x10], 0x0
+0804842d:  75 0b                   jnz    0x804843a
+0804842f:  c7 45 f0 01 00 00 00    mov    DWORD PTR [ebp-0x10], 0x1	// quotation = TRUE
+08048436:  83 6d f4 01             sub    DWORD PTR [ebp-0xc], 0x1	// upperlimit--
+0804843a:  80 7d eb 3e             cmp    DWORD PTR [ebp-0x15], 0x3e	// if ((c == '>') && (quotation))
+0804843e:  75 11                   jnz    0x8048451
+08048440:  83 7d f0 00             cmp    DWORD PTR [ebp-0x10], 0x0
+08048444:  74 0b                   jz     0x8048451
+08048446:  c7 45 f0 00 00 00 00    mov    DWORD PTR [ebp-0x10], 0x0	// quotation = FALSE
+0804844d:  83 45 f4 01             add    DWORD PTR [ebp-0xc], 0x1	// upperlimit++
+08048451:  80 7d eb 28             cmp    DWORD PTR [ebp-0x15], 0x28	// if ((c == '(') && (!quotation) && !roundquote)
+08048455:  75 17                   jnz    0x804846e
+08048457:  83 7d f0 00             cmp    DWORD PTR [ebp-0x10], 0x0
+0804845b:  75 11                   jnz    0x804846e
+0804845d:  83 7d ec 00             cmp    DWORD PTR [ebp-0x14], 0x0
+08048461:  75 0b                   jnz    0x804846e
+08048463:  c7 45 ec 01 00 00 00    mov    DWORD PTR [ebp-0x14], 0x1	// roundquote = TRUE
+0804846a:  83 6d f4 01             sub    DWORD PTR [ebp-0xc], 0x1	// upperlimit--
+0804846e:  80 7d eb 29             cmp    DWORD PTR [ebp-0x15], 0x29	// if ((c == ')') && (!quotation) && roundquote)
+08048472:  75 17                   jnz    0x804848b
+08048474:  83 7d f0 00             cmp    DWORD PTR [ebp-0x10], 0x0
+08048478:  75 11                   jnz    0x804848b
+0804847a:  83 7d ec 00             cmp    DWORD PTR [ebp-0x14], 0x0
+0804847e:  74 0b                   jz     0x804848b
+08048480:  c7 45 ec 00 00 00 00    mov    DWORD PTR [ebp-0x14], 0x0	// roundquote = FALSE
+08048487:  83 45 f4 01             add    DWORD PTR [ebp-0xc], 0x1	// upperlimit++
+0804848b:  8b 45 f8                mov    eax, DWORD PTR [ebp-0x8]
+0804848e:  3b 45 f4                cmp    eax, DWORD PTR [ebp-0xc]	// if (d < upperlimit)
+08048491:  73 0f                   jnb    0x80484a2
+08048493:  8b 45 f8                mov    eax, DWORD PTR [ebp-0x8]	
+08048496:  8d 50 01                lea    edx, [eax+0x1]
+08048499:  89 55 f8                mov    DWORD PTR [ebp-0x8], edx
+0804849c:  0f b6 55 eb             movzx  edx, DWORD PTR [ebp-0x15]	
+080484a0:  88 10                   mov    DWORD PTR [eax], dl		// *d++ = c;
+080484a2:  8b 45 fc                mov    eax, DWORD PTR [ebp-0x4]	
+080484a5:  8d 50 01                lea    edx, [eax+0x1]
+080484a8:  89 55 fc                mov    DWORD PTR [ebp-0x4], edx	// p++
+080484ab:  0f b6 00                movzx  eax, DWORD PTR [eax]		// c = *p
+080484ae:  88 45 eb                mov    DWORD PTR [ebp-0x15], al	// c
+080484b1:  80 7d eb 00             cmp    DWORD PTR [ebp-0x15], 0x0	// while (c != '\0')
+080484b5:  0f 85 68 ff ff ff       jnz    0x8048423
+080484bb:  83 7d ec 00             cmp    DWORD PTR [ebp-0x14], 0x0	// if (roundquote)
+080484bf:  74 0c                   jz     0x80484cd
+080484c1:  8b 45 f8                mov    eax, DWORD PTR [ebp-0x8]
+080484c4:  8d 50 01                lea    edx, [eax+0x1]
+080484c7:  89 55 f8                mov    DWORD PTR [ebp-0x8], edx
+080484ca:  c6 00 29                mov    DWORD PTR [eax], 0x29		// *d++ = ')';
+080484cd:  83 7d f0 00             cmp    DWORD PTR [ebp-0x10], 0x0	// if (quotation)
+080484d1:  74 0c                   jz     0x80484df
+080484d3:  8b 45 f8                mov    eax, DWORD PTR [ebp-0x8]
+080484d6:  8d 50 01                lea    edx, [eax+0x1]
+080484d9:  89 55 f8                mov    DWORD PTR [ebp-0x8], edx
+080484dc:  c6 00 3e                mov    DWORD PTR [eax], 0x3e		// *d++ = '>';
+080484df:  c9                      leave  
+080484e0:  c3                      ret    
+
+main:
+080484e1:  55                      push   ebp
+080484e2:  89 e5                   mov    ebp, esp
+080484e4:  83 ec 14                sub    esp, 0x14
+080484e7:  8b 45 fc                mov    eax, DWORD PTR [ebp-0x4]	// *input
+080484ea:  89 04 24                mov    DWORD PTR [esp], eax		
+080484ed:  e8 fb fe ff ff          call   0x80483ed <copy_it>
+080484f2:  c9                      leave  
+080484f3:  c3                      ret    
+
+Analyzed x86-32 code: 78 instructions
+Analyzed RREIL code: 343 instructions
+Analysis steps: 1054  ≈3 iterations/instruction
+Max iterations to fixpoint: 5
+Widening points: 2 @ {1*(80483ed), 5*(8048423)}
+Warnings: 4
+
+Warnings: 4
+@ (80484a0) in iter. 2
+  #II: Write to xref: [currSP:-activeFrame-BP|SP+eax] with non-constant offset: [-225, -36]
+@ (80484ab) in iter. 1
+  #EE: Possible access violation at numeric address [0, +oo]
+@ (80484ca) in iter. 1
+  #II: Write to xref: [currSP:-activeFrame-BP|SP+eax] with non-constant offset: [-225, -35]
+@ (80484dc) in iter. 1
+  #II: Write to xref: [currSP:-activeFrame-BP|SP+eax] with non-constant offset: [-225, -34]

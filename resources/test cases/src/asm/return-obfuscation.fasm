@@ -1,0 +1,25 @@
+; This example will fool disassemblers that assume a call to return to the instruction after the call.
+; Taken from: "Static Detection of Disassembly Errors" - Nithya Krishnamoorthy, Saumya Debray, Keith Fligg†
+
+format elf
+
+section '.data' writeable
+section '.text' executable
+
+public main
+
+some_padding:
+  nop
+  nop
+
+main:
+  call 0xa       ; jump to byte 0x5d in the jmp instruction below
+  jmp 0x455d04f7 ; from 0x5d on this disassembles to "pop ebp; inc ebp; push ebp; ret"
+  push ebp	 ; thus the call will not return immediately after the "call 0xa" instruction
+  ret 		 ; but one byte into the "jmp 0x455d04f7"
+
+exit:
+  xor     edi, edi
+  mov     eax, 60
+  ret
+

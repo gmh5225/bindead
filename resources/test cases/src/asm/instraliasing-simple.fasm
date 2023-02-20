@@ -1,0 +1,49 @@
+; Demonstrates the jump into an instruction to yield a different instruction sequence
+; Taken from: "Interpreter exploitation: Pointer inference and JIT spraying" - Dion Blazakis
+
+format elf
+	
+section '.data' writeable
+section '.text' executable
+
+public main
+
+some_padding:
+  nop
+  nop
+
+main:
+  cmp eax, 0
+  je 8
+  mov eax, 0x3c54d0d9
+  xor eax, 0x3c909058
+  xor eax, 0x3c59f46a
+  xor eax, 0x3c90c801
+  xor eax, 0xc39030d9
+
+exit:
+  ret
+
+; The above jump results in the code below being disassembled which is a popular method to retrieve the PC
+; see http://www.securityfocus.com/archive/82/327100/2009-02-24/1
+;
+; d9d0	fnop
+; 54 	push esp
+; 3c35 	cmp al,35
+; 58 	pop eax
+; 90	nop
+; 90	nop
+; 3c35	cmp al,35
+; 6af4	push -0c
+; 59	pop ecx
+; 3c35	cmp al,35
+; 01c8	add eax,ecx
+; 90	nop
+; 3c35	cmp al,35
+; d930	fstenv ds:[eax]
+
+
+
+
+
+

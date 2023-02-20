@@ -1,0 +1,13 @@
+format elf
+	
+section '.text' executable
+
+public main
+
+main:   
+	mov	edx, 10
+	mov	eax, 0
+	jmp	main
+exit:
+    ret
+	

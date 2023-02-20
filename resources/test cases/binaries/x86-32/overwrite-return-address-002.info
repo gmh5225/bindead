@@ -1,0 +1,39 @@
+Info-Version: 0.3
+Compilation info for source file "overwrite-return-address-002.c" that was compiled to "overwrite-return-address-002" on 2011-10-24-18:19:28
+--------------------------------------------------------------------------------
+
+System: LSB Version:	core-2.0-amd64:core-2.0-noarch:core-3.0-amd64:core-3.0-noarch:core-3.1-amd64:core-3.1-noarch:core-3.2-amd64:core-3.2-noarch:core-4.0-amd64:core-4.0-noarch
+Distributor ID:	Ubuntu
+Description:	Ubuntu 11.10
+Release:	11.10
+Codename:	oneiric
+Kernel: Linux 3.0.0-13-generic #21-Ubuntu SMP Mon Oct 17 20:18:51 UTC 2011 x86_64 x86_64 x86_64 GNU/Linux
+
+--------------------------------------------------------------------------------
+Toolchain
+--------------------------------------------------------------------------------
+Compiler: gcc (Ubuntu/Linaro 4.6.1-9ubuntu3) 4.6.1
+Optimization-Level: 0
+Compiler command line: "gcc -O0 -m32 -g -o overwrite-return-address-002 overwrite-return-address-002.c"
+
+Linker: GNU ld (GNU Binutils for Ubuntu) 2.21.53.20110810
+Libc: ldd (Ubuntu EGLIBC 2.13-20ubuntu5) 2.13
+
+--------------------------------------------------------------------------------
+Binary
+--------------------------------------------------------------------------------
+Machine: Intel 80386
+Type: executable
+Bits: 32
+Endianness: little
+Linking: dynamic
+Symbol-Table: present
+Debug info: present
+
+Security Measures:
+--------------------------------------------------------------------------------
+No-Execute bit (NX): yes
+Stack Canary: no
+Relocation Read-Only: yes
+Global Offset Table (GOT) Read-Only: no
+Fortify Source: no

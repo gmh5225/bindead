@@ -1,0 +1,38 @@
+Info-Version: 0.3
+Compilation info for source file "instraliasing.c" that was compiled to "../../binary/x86-64/instraliasing.o" on 2011-09-23-13:38:19
+--------------------------------------------------------------------------------
+
+System: Distributor ID:	Debian
+Description:	Debian GNU/Linux testing (wheezy)
+Release:	testing
+Codename:	wheezy
+Kernel: Linux 3.0.0-1-amd64 #1 SMP Sat Aug 27 16:21:11 UTC 2011 x86_64 unknown unknown GNU/Linux
+
+--------------------------------------------------------------------------------
+Toolchain
+--------------------------------------------------------------------------------
+Compiler: gcc (Debian 4.6.1-4) 4.6.1
+Optimization-Level: 0
+Compiler command line: "gcc -m64 instraliasing.c -o ../../binary/x86-64/instraliasing.o"
+
+Linker: GNU ld (GNU Binutils for Debian) 2.21.52.20110606
+Libc: ldd (Debian EGLIBC 2.13-18) 2.13
+
+--------------------------------------------------------------------------------
+Binary
+--------------------------------------------------------------------------------
+Machine: Advanced Micro Devices X86-64
+Type: executable
+Bits: 64
+Endianness: little
+Linking: dynamic
+Symbol-Table: present
+Debug info: not present
+
+Security Measures:
+--------------------------------------------------------------------------------
+No-Execute bit (NX): yes
+Stack Canary: no
+Relocation Read-Only: no
+Global Offset Table (GOT) Read-Only: no
+Fortify Source: no

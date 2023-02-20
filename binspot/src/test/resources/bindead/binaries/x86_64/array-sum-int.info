@@ -1,0 +1,39 @@
+Info-Version: 0.3
+Compilation info for source file "array-sum-int.c" that was compiled to "array-sum-int" on 2012-05-14-16:40:11
+--------------------------------------------------------------------------------
+
+System: LSB Version:	core-2.0-amd64:core-2.0-noarch:core-3.0-amd64:core-3.0-noarch:core-3.1-amd64:core-3.1-noarch:core-3.2-amd64:core-3.2-noarch:core-4.0-amd64:core-4.0-noarch
+Distributor ID:	Ubuntu
+Description:	Ubuntu 12.04 LTS
+Release:	12.04
+Codename:	precise
+Kernel: Linux 3.2.0-24-generic #38-Ubuntu SMP Tue May 1 16:18:50 UTC 2012 x86_64 x86_64 x86_64 GNU/Linux
+
+--------------------------------------------------------------------------------
+Toolchain
+--------------------------------------------------------------------------------
+Compiler: gcc (Ubuntu/Linaro 4.6.3-1ubuntu5) 4.6.3
+Optimization-Level: 0
+Compiler command line: "gcc -static -o array-sum-int array-sum-int.c"
+
+Linker: GNU ld (GNU Binutils for Ubuntu) 2.22
+Libc: ldd (Ubuntu EGLIBC 2.15-0ubuntu10) 2.15
+
+--------------------------------------------------------------------------------
+Binary
+--------------------------------------------------------------------------------
+Machine: Advanced Micro Devices X86-64
+Type: executable
+Bits: 64
+Endianness: little
+Linking: static
+Symbol-Table: present
+Debug info: not present
+
+Security Measures:
+--------------------------------------------------------------------------------
+No-Execute bit (NX): yes
+Stack Canary: no
+Relocation Read-Only: yes
+Global Offset Table (GOT) Read-Only: no
+Fortify Source: yes

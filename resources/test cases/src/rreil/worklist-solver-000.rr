@@ -1,0 +1,9 @@
+
+entry:
+	mov.d r1,0x100
+	mov.d r2,r1
+exit:
+    mov.d r0, ?
+    return.d r0
+	
+	

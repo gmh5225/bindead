@@ -1,0 +1,108 @@
+Analyzed native (x86-32) code (83 instructions):
+
+copy_it:
+080483ed:  55                      push   ebp
+080483ee:  89 e5                   mov    ebp, esp
+080483f0:  81 ec f0 00 00 00       sub    esp, 0xf0
+080483f6:  8b 45 08                mov    eax, DWORD PTR [ebp+0x8]  // *input
+080483f9:  89 45 e8                mov    DWORD PTR [ebp-0x18], eax // *input
+080483fc:  c7 45 fc be 00 00 00    mov    DWORD PTR [ebp-0x4], 0xbe // upperLimit    [currSP-8]
+08048403:  c7 45 f8 00 00 00 00    mov    DWORD PTR [ebp-0x8], 0x0  // quotation     [currSP-12]
+0804840a:  c7 45 f4 00 00 00 00    mov    DWORD PTR [ebp-0xc], 0x0  // roundquote    [currSP-16]
+08048411:  c7 45 f0 00 00 00 00    mov    DWORD PTR [ebp-0x10], 0x0 // inputIndex    [currSP-20]
+08048418:  c7 45 ec 00 00 00 00    mov    DWORD PTR [ebp-0x14], 0x0 // outputIndex   [currSP-24]
+0804841f:  e9 97 00 00 00          jmp    0x80484bb
+08048424:  8b 45 f0                mov    eax, DWORD PTR [ebp-0x10] // inputIndex
+08048427:  8b 55 08                mov    edx, DWORD PTR [ebp+0x8]  // *input
+0804842a:  01 d0                   add    eax, edx		    // input + inputIndex
+0804842c:  0f b6 00                movzx  eax, DWORD PTR [eax]      // c = input[inputIndex]
+0804842f:  88 45 e7                mov    DWORD PTR [ebp-0x19], al  // c             [currSP-29]
+08048432:  83 45 f0 01             add    DWORD PTR [ebp-0x10], 0x1  // inputIndex++
+08048436:  80 7d e7 3c             cmp    DWORD PTR [ebp-0x19], 0x3c // if ((c == '<') && (!quotation))
+0804843a:  75 11                   jnz    0x804844d
+0804843c:  83 7d f8 00             cmp    DWORD PTR [ebp-0x8], 0x0
+08048440:  75 0b                   jnz    0x804844d
+08048442:  c7 45 f8 01 00 00 00    mov    DWORD PTR [ebp-0x8], 0x1    // quotation = TRUE
+08048449:  83 6d fc 01             sub    DWORD PTR [ebp-0x4], 0x1    // upperlimit--
+0804844d:  80 7d e7 3e             cmp    DWORD PTR [ebp-0x19], 0x3e  // if ((c == '>') && (quotation))
+08048451:  75 11                   jnz    0x8048464
+08048453:  83 7d f8 00             cmp    DWORD PTR [ebp-0x8], 0x0
+08048457:  74 0b                   jz     0x8048464
+08048459:  c7 45 f8 00 00 00 00    mov    DWORD PTR [ebp-0x8], 0x0    // quotation = FALSE
+08048460:  83 45 fc 01             add    DWORD PTR [ebp-0x4], 0x1    // upperlimit++
+08048464:  80 7d e7 28             cmp    DWORD PTR [ebp-0x19], 0x28  // if ((c == '(') && (!quotation) && !roundquote)
+08048468:  75 17                   jnz    0x8048481
+0804846a:  83 7d f8 00             cmp    DWORD PTR [ebp-0x8], 0x0
+0804846e:  75 11                   jnz    0x8048481
+08048470:  83 7d f4 00             cmp    DWORD PTR [ebp-0xc], 0x0
+08048474:  75 0b                   jnz    0x8048481
+08048476:  c7 45 f4 01 00 00 00    mov    DWORD PTR [ebp-0xc], 0x1    // roundquote = TRUE
+0804847d:  83 6d fc 01             sub    DWORD PTR [ebp-0x4], 0x1    // upperlimit--
+08048481:  80 7d e7 29             cmp    DWORD PTR [ebp-0x19], 0x29  // if ((c == ')') && (!quotation) && roundquote)
+08048485:  75 17                   jnz    0x804849e
+08048487:  83 7d f8 00             cmp    DWORD PTR [ebp-0x8], 0x0
+0804848b:  75 11                   jnz    0x804849e
+0804848d:  83 7d f4 00             cmp    DWORD PTR [ebp-0xc], 0x0
+08048491:  74 0b                   jz     0x804849e
+08048493:  c7 45 f4 00 00 00 00    mov    DWORD PTR [ebp-0xc], 0x0  // roundquote = FALSE
+0804849a:  83 45 fc 01             add    DWORD PTR [ebp-0x4], 0x1  // upperlimit++
+0804849e:  8b 45 ec                mov    eax, DWORD PTR [ebp-0x14]
+080484a1:  3b 45 fc                cmp    eax, DWORD PTR [ebp-0x4]  // if (outputIndex < upperlimit)
+080484a4:  73 15                   jnb    0x80484bb
+080484a6:  8d 95 1f ff ff ff       lea    edx, [ebp-0xe1]           // *localbuf
+080484ac:  8b 45 ec                mov    eax, DWORD PTR [ebp-0x14] // outputIndex
+080484af:  01 c2                   add    edx, eax                  // localbuf + outputIndex
+080484b1:  0f b6 45 e7             movzx  eax, DWORD PTR [ebp-0x19] // c
+080484b5:  88 02                   mov    DWORD PTR [edx], al       // localbuf[outputIndex] = c
+080484b7:  83 45 ec 01             add    DWORD PTR [ebp-0x14], 0x1 // outputIndex++
+080484bb:  8b 45 f0                mov    eax, DWORD PTR [ebp-0x10]
+080484be:  3b 45 0c                cmp    eax, DWORD PTR [ebp+0xc]  // while (inputIndex < length)
+080484c1:  0f 82 5d ff ff ff       jb     0x8048424
+080484c7:  83 7d f4 00             cmp    DWORD PTR [ebp-0xc], 0x0  // if (roundquote)
+080484cb:  74 12                   jz     0x80484df
+080484cd:  8d 95 1f ff ff ff       lea    edx, [ebp-0xe1]
+080484d3:  8b 45 ec                mov    eax, DWORD PTR [ebp-0x14]
+080484d6:  01 d0                   add    eax, edx
+080484d8:  c6 00 29                mov    DWORD PTR [eax], 0x29     // localbuf[outputIndex] = ')'
+080484db:  83 45 ec 01             add    DWORD PTR [ebp-0x14], 0x1 // outputIndex++
+080484df:  83 7d f8 00             cmp    DWORD PTR [ebp-0x8], 0x0  // if (quotation)
+080484e3:  74 12                   jz     0x80484f7
+080484e5:  8d 95 1f ff ff ff       lea    edx, [ebp-0xe1]
+080484eb:  8b 45 ec                mov    eax, DWORD PTR [ebp-0x14]
+080484ee:  01 d0                   add    eax, edx
+080484f0:  c6 00 3e                mov    DWORD PTR [eax], 0x3e     // localbuf[outputIndex] = '>'
+080484f3:  83 45 ec 01             add    DWORD PTR [ebp-0x14], 0x1 // outputIndex++
+080484f7:  c9                      leave  
+080484f8:  c3                      ret    
+
+main:
+080484f9:  55                      push   ebp
+080484fa:  89 e5                   mov    ebp, esp
+080484fc:  83 ec 18                sub    esp, 0x18
+080484ff:  c7 45 fc b0 85 04 08    mov    DWORD PTR [ebp-0x4], 0x80485b0    // *input
+08048506:  c7 44 24 04 c8 00 00 00 mov    DWORD PTR [esp+0x4], 0xc8         // length    [SP@8048514.02-24]
+0804850e:  8b 45 fc                mov    eax, DWORD PTR [ebp-0x4]
+08048511:  89 04 24                mov    DWORD PTR [esp], eax
+08048514:  e8 d4 fe ff ff          call   0x80483ed <copy_it>
+08048519:  c9                      leave  
+0804851a:  c3                      ret    
+
+¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+
+Analyzed x86-32 code: 83 instructions
+Analyzed RREIL code: 439 instructions
+Analysis steps: 1729  ≈3 iterations/instruction
+Max iterations to fixpoint: 6
+Widening points: 2 @ {1*(80483ed), 6*(8048424)}
+Warnings: 4
+
+Warnings: 4
+@ (804842c) in iter. 2
+  #EE: Possible access violation at numeric address [134514096, 134514295]
+@ (80484b5) in iter. 2
+  #II: Write to xref: [currSP:-activeFrame-BP|SP+edx] with non-constant offset: [-229, -40]
+@ (80484d8) in iter. 1
+  #II: Write to xref: [currSP:-activeFrame-BP|SP+eax] with non-constant offset: [-228, -39]
+@ (80484f0) in iter. 1
+  #II: Write to xref: [currSP:-activeFrame-BP|SP+eax] with non-constant offset: [-228, -38]
+

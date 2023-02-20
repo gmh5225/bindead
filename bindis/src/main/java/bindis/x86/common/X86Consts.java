@@ -1,0 +1,43 @@
+package bindis.x86.common;
+
+public final class X86Consts {
+  public static final int ESCAPE_OPCODE = 0x0f;
+  public static final int EAX = 0;
+  public static final int ECX = 1;
+  public static final int EDX = 2;
+  public static final int EBX = 3;
+  public static final int ESP = 4;
+  public static final int EBP = 5;
+  public static final int ESI = 6;
+  public static final int EDI = 7;
+  public static final int AX = 8;
+  public static final int CX = 9;
+  public static final int DX = 10;
+  public static final int BX = 11;
+  public static final int SP = 12;
+  public static final int BP = 13;
+  public static final int SI = 14;
+  public static final int DI = 15;
+  public static final int AL = 16;
+  public static final int CL = 17;
+  public static final int DL = 18;
+  public static final int BL = 19;
+  public static final int AH = 20;
+  public static final int CH = 21;
+  public static final int DH = 22;
+  public static final int BH = 23;
+  public static final int ES = 24;
+  public static final int CS = 25;
+  public static final int SS = 26;
+  public static final int DS = 27;
+  public static final int FS = 28;
+  public static final int GS = 29;
+  public static final int RAX = 30;
+  public static final int RCX = 31;
+  public static final int RDX = 32;
+  public static final int RBX = 33;
+  public static final int RSP = 34;
+  public static final int RBP = 35;
+  public static final int RSI = 36;
+  public static final int RDI = 37;
+}

@@ -1,0 +1,13 @@
+// indirect unconditional forward jump through a register
+// jumps over an instruction which should then be unreachable/dead code
+entry:
+	mov.d r2, 4
+	mov.d r1, 10
+loop:
+	br.d r2
+	sub.d r1, r1, 1
+	cmpltu.d NZF, 0, r1
+	brc.d NZF, loop:
+exit:
+    mov.d r0, ?
+    return.d r0

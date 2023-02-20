@@ -1,0 +1,38 @@
+Info-Version: 0.2
+Compilation info for source file "global-vars-write-001.c" that was compiled to "global-vars-write-001" on 2011-09-09-17:05:02
+--------------------------------------------------------------------------------
+
+System: LSB Version:	core-2.0-amd64:core-2.0-noarch:core-3.0-amd64:core-3.0-noarch:core-3.1-amd64:core-3.1-noarch:core-3.2-amd64:core-3.2-noarch:core-4.0-amd64:core-4.0-noarch
+Distributor ID:	Ubuntu
+Description:	Ubuntu 11.04
+Release:	11.04
+Codename:	natty
+Kernel: Linux 2.6.38-11-generic #49-Ubuntu SMP Mon Aug 29 20:47:07 UTC 2011 x86_64 x86_64 x86_64 GNU/Linux
+
+--------------------------------------------------------------------------------
+Toolchain
+--------------------------------------------------------------------------------
+Compiler: gcc (Ubuntu/Linaro 4.5.2-8ubuntu4) 4.5.2
+Optimization-Level: 0
+Compiler command line: "gcc -m32 -O0 -o global-vars-write-001 global-vars-write-001.c"
+
+Linker: GNU ld (GNU Binutils for Ubuntu) 2.21.0.20110327
+Libc: ldd (Ubuntu EGLIBC 2.13-0ubuntu13) 2.13
+
+--------------------------------------------------------------------------------
+Binary
+--------------------------------------------------------------------------------
+Machine: Intel 80386
+Type: executable
+Bits: 32
+Endianness: little
+Symbol-Table: present
+Linking: dynamic
+
+Security Measures:
+--------------------------------------------------------------------------------
+No-Execute bit (NX): yes
+Stack Canary: no
+Relocation Read-Only: yes
+Global Offset Table (GOT) Read-Only: no
+Fortify Source: no

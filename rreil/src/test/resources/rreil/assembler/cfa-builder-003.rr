@@ -1,0 +1,13 @@
+
+entry:
+	mov.d target, 0x100
+	mov.d r1,10
+loop:
+	br.d target
+	sub.d r1,r1,1
+	cmpltu.d NZF, 0, r1
+	brc.d NZF, loop:
+exit:
+    mov.d r0, ?
+    return.d r0
+	

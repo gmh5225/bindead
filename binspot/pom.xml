@@ -1,0 +1,140 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>bindead</groupId>
+        <artifactId>bindead</artifactId>
+        <version>0.0.80-SNAPSHOT</version>
+    </parent>
+    <artifactId>binspot</artifactId>
+    <name>Binspot</name>
+    <packaging>jar</packaging>
+
+    <description>
+        Abstract interpretation analysis tool tailored towards binary analysis.
+    </description>
+
+    <dependencies>
+        <!-- Own module dependencies -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>javalx</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>rreil</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>bindis</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>binparse</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!-- Misc from Maven Central -->        
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>16.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.jamesmurty.utils</groupId>
+            <artifactId>java-xmlbuilder</artifactId>
+            <version>0.6</version>
+        </dependency>
+        <dependency>
+            <groupId>com.googlecode.jatl</groupId>
+            <artifactId>jatl</artifactId>
+            <version>0.2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.sat4j</groupId>
+            <artifactId>org.sat4j.core</artifactId>
+            <version>2.3.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.beust</groupId>
+            <artifactId>jcommander</artifactId>
+            <version>1.35</version>
+        </dependency>
+        
+        <!-- Bindings to native libs for polyhedra and other numeric domains -->
+        <dependency>
+            <groupId>fr.ensmp.cri.apron</groupId>
+            <artifactId>apron</artifactId>
+            <version>0.9.11</version>
+        </dependency>
+        <dependency>
+            <groupId>fr.ensmp.cri.apron</groupId>
+            <artifactId>apron-gmp</artifactId>
+            <version>0.9.11</version>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.4.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <!-- move this one to the target directory but be careful as relative paths might not get updated for all plugins -->
+<!--                             <dependencyReducedPomLocation>${project.build.directory}/dependency-reduced-pom.xml</dependencyReducedPomLocation> -->
+                            <shadedArtifactAttached>true</shadedArtifactAttached>
+                            <!-- <finalName>bindead</finalName> -->
+                            <shadedArtifactId>bindead</shadedArtifactId>
+                            <minimizeJar>false</minimizeJar>
+                            <promoteTransitiveDependencies>true</promoteTransitiveDependencies>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>LICENSE</exclude>
+                                        <exclude>NOTICE.txt</exclude>
+                                        <exclude>about.html</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>                            
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ApacheLicenseResourceTransformer"/>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>cli.Bindead</mainClass>
+                                </transformer>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.PluginXmlResourceTransformer"/>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
+                                    <resource>AUTHORS.txt</resource>
+                                    <file>../AUTHORS.txt</file>
+                                </transformer>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
+                                    <resource>LICENSE.txt</resource>
+                                    <file>../LICENSE.txt</file>
+                                </transformer>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
+                                    <resource>CHANGELOG.md</resource>
+                                    <file>../CHANGELOG.md</file>
+                                </transformer>                                
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
+                                    <resource>README.md</resource>
+                                    <file>../README.md</file>
+                                </transformer>                                
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

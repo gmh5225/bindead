@@ -1,0 +1,11 @@
+
+entry:
+    mov.b r1,?
+    cmpltu.b LESS, r1, 5
+    brc.b LESS, lessThan:
+    mov.b r1, 5
+lessThan:
+    mov.b r2, r1
+exit:
+    mov.d r0, ?
+    return.d r0

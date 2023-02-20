@@ -1,0 +1,75 @@
+
+/* Just a list of (all) possible instructions (see ParseTree.jjt for the grammar definition)
+ *
+ *  First operand register is always the target of the operation result (except for branches that have no result).
+ *  (e.g. "op opnd1, opnd2, opnd3" => "opnd1 <- opnd2 op opnd3")
+ *
+ * Instruction data size annotations can be one of:
+ *     Suffix   Size in bits
+ *      .1          1
+ *      .b          8
+ *      .w          16
+ *      .d          32
+ *      .q          64
+ *      .o          128
+ *      .x          128
+ *      .z          256
+ *  where multiple suffixes are applied for each operand in order
+ *  (e.g. "ldm.b.d r1, r2" => size(r1)=.b=8, size(r2)=.d=32 )
+ *
+ *  Register offsets
+ *      r1/0  => register r1 at offset 0
+ *      r2/32 => register r2 at offset 32
+ *
+ *  Immediate values can be of:
+ *      123     => integer number
+ *      0x123   => hexadecimal number
+ *      [l, h]  => an interval with any of the above as bounds or one of -oo, +oo
+ *      ?       => undefined value (sets the register content to undefined) 
+ */
+
+// Compiler options
+option DEFAULT_SIZE = 32       // set the default instruction bit-size to be used if not size annotation is provided 
+
+main:                          // label declaration
+	// Data transfer operations
+	mov.d r1, r2               // r1 <- r2                     move value in r2 to r1
+    mov.b r1, r1/8             // r1[0:7] <- r1[8:15]          move byte at offset 8 to byte at offset 0
+	sign-extend.d.w r1, r2     // r1 <- r2                     move word value from r2 to r1 and sign extend it to double word
+	convert.d.w r1, r2         // r1 <- r2                     move word value from r2 to r1 and zero extend it to double word
+
+	// Binary operations
+	add.d r1, r2, r3           // r1 <- r2 + r3
+	sub.d r1, r2, r3           // r1 <- r2 - r3
+	mul.d r1, r2, r3           // r1 <- r2 * r3
+	div.d r1, r2, r3           // r1 <- r2 / r3                unsigned division
+	divs.d r1, r2, r3          // r1 <- r2 / r3                signed division
+	shl.d r1, r2, r3           // r1 <- r2 << r3               shift left
+	shr.d r1, r2, r3           // r1 <- r2 >> r3               unsigned shift right
+	shrs.d r1, r2, r3          // r1 <- r2 >> r3               signed shift right (does not shift the sign bit)
+	mod.d r1, r2, r3           // r1 <- r2 % r3
+	xor.d r1, r2, r3           // r1 <- r2 ^ r3
+	or.d r1, r2, r3            // r1 <- r2 | r3
+	and.d r1, r2, r3           // r1 <- r2 & r3
+
+	// Relational operations (compares);
+    // first parameter is assumed to be a boolean-flag and is therefore always accessed with size 1
+	cmpeq.d f1, r2, r3         // f1 <- r2 = r3                equal
+	cmples.d f1, r2, r3        // f1 <- r2 <= r3               signed lower equal
+	cmpleu.d f1, r2, r3        // f1 <- r2 <= r3               unsigned lower equal
+	cmplts.d f1, r2, r3        // f1 <- r2 < r3                signed lower than
+	cmpltu.d f1, r2, r3        // f1 <- r2 < r3                unsigned lower than
+
+	// Memory access
+	load.b.d r1, r2             // r1 <- [r2]                   load r1 with first byte value at [r2] where address is a double word value
+	store.d.b r1, r2             // [r1] <- r2                   store byte value from r2 at [r1] where address is a double word value
+
+	// Branching (the jump is performed if the first operand evaluates to a non-zero value)
+	brc.d ZF, main:            // if (ZF != 0) goto main:      conditional with register condition and label target
+	brc.d 1, exit:             // if (1 != 0) goto main:       conditional with immediate condition and label target
+	br.d exit:                 // goto exit:                   unconditional with label target
+	call.d exit:               // call exit:                   unconditional call with label target
+    return.d t0                // return from function (branch to address in t0)
+
+exit:                          // label declaration
+

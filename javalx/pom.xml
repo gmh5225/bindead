@@ -1,0 +1,25 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>bindead</groupId>
+    <artifactId>bindead</artifactId>
+    <version>0.0.80-SNAPSHOT</version>
+  </parent>
+  <artifactId>javalx</artifactId>
+  <name>JavaLX</name>
+  <packaging>jar</packaging>
+
+  <description>
+    Utility library containing persistent data-structures, numeric data types and some functional foo for Java.
+  </description>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.jamesmurty.utils</groupId>
+      <artifactId>java-xmlbuilder</artifactId>
+      <version>0.4</version>
+    </dependency>
+  </dependencies>
+</project>

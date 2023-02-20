@@ -1,0 +1,12 @@
+
+entry:
+	mov.d target, 0x100
+	mov.d r1,10
+loop:
+	//call.d target
+	sub.d r1,r1,1
+	brc.d 1, loop:
+exit:
+    mov.d r0, ?
+    return.d r0
+

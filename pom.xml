@@ -1,0 +1,227 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>bindead</groupId>
+  <artifactId>bindead</artifactId>
+  <version>0.0.80-SNAPSHOT</version>
+  <name>Bindead</name>
+  <packaging>pom</packaging>
+
+  <description>
+    Bindead is a framework for the static analysis of binaries using abstract interpretation.
+  </description>
+
+  <properties>
+      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+      <externalLibsToInstallDirectory>${project.basedir}/lib/</externalLibsToInstallDirectory>
+  </properties>
+  
+  <modules>
+    <module>javalx</module>
+    <module>binparse</module>
+    <module>rreil</module>
+    <module>bindis</module>
+    <module>binspot</module>
+  </modules>
+
+  <scm>
+    <connection>scm:git:https://bitbucket.org/mihaila/bindead.git</connection>
+    <developerConnection>scm:git:https://bitbucket.org/mihaila/bindead.git</developerConnection>
+    <url>https://bitbucket.org/mihaila/bindead/</url>
+  </scm>
+
+  <issueManagement>
+    <system>Bitbucket</system>
+    <url>https://bitbucket.org/mihaila/bindead/issues</url>
+  </issueManagement>
+
+  <licenses>
+    <license>
+      <name>GNU General Public License, Version 3</name>
+      <url>http://www.gnu.org/licenses/gpl-3.0.en.html</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <build>
+      <plugins>
+          <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-compiler-plugin</artifactId>
+              <version>3.3</version>
+              <configuration>
+                  <source>1.7</source>
+                  <target>1.7</target>
+                  <showDeprecation>false</showDeprecation>
+              </configuration>
+          </plugin>
+          <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-jar-plugin</artifactId>
+              <version>2.6</version>
+              <configuration>
+                  <archive>
+                      <manifestEntries>
+                          <Built-By></Built-By>
+                      </manifestEntries>                      
+                      <manifest>
+                          <addClasspath/>
+                          <addDefaultImplementationEntries/>
+                          <addDefaultSpecificationEntries/>
+                      </manifest>
+                  </archive>
+              </configuration>
+          </plugin>
+          <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-source-plugin</artifactId>
+              <version>2.4</version>
+              <executions>
+                  <execution>
+                      <id>attach-sources</id>
+                      <goals>
+                          <goal>jar</goal>
+                      </goals>
+                  </execution>
+              </executions>
+              <configuration>
+                  <archive>
+                      <manifestEntries>
+                          <Built-By></Built-By>
+                      </manifestEntries>                      
+                  </archive>
+              </configuration>
+          </plugin>
+          <!-- enable when needed as it is quite slow and pollutes the output    -->
+<!--          <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-javadoc-plugin</artifactId>
+              <version>2.9</version>
+              <executions>
+                  <execution>
+                      <id>attach-javadocs</id>
+                      <goals>
+                          <goal>jar</goal>
+                      </goals>
+                  </execution>
+              </executions>
+              <configuration>
+                  <quiet>true</quiet>
+                  <additionalparam>-Xdoclint:none</additionalparam>
+                  <archive>
+                      <manifestEntries>
+                          <Built-By></Built-By>
+                      </manifestEntries>                      
+                  </archive>
+              </configuration>
+          </plugin>-->
+
+
+          <plugin> <!-- Install 3rd party dependencies to the local maven repository -->
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-install-plugin</artifactId>
+              <version>2.5.2</version>
+              <inherited>false</inherited> <!-- Do not execute this in each subproject again. Path variables are different in each subproject! -->
+              <executions>
+                  <execution>
+                      <id>install-apron</id>
+                      <phase>initialize</phase>
+                      <goals>
+                          <goal>install-file</goal>
+                      </goals>
+                      <configuration>
+                          <file>${externalLibsToInstallDirectory}/apron-0.9.11.jar</file>
+                          <groupId>fr.ensmp.cri.apron</groupId>
+                          <artifactId>apron</artifactId>
+                          <version>0.9.11</version>
+                          <sources>${externalLibsToInstallDirectory}/apron-0.9.11-sources.jar</sources>
+                          <packaging>jar</packaging>
+                          <createChecksum>true</createChecksum>
+                          <generatePom>true</generatePom>
+                      </configuration>
+                  </execution>
+                  <execution>
+                      <id>install-apron-gmp</id>
+                      <phase>initialize</phase>
+                      <goals>
+                          <goal>install-file</goal>
+                      </goals>
+                      <configuration>
+                          <file>${externalLibsToInstallDirectory}/apron-gmp-0.9.11.jar</file>
+                          <groupId>fr.ensmp.cri.apron</groupId>
+                          <artifactId>apron-gmp</artifactId>
+                          <version>0.9.11</version>
+                          <sources>${externalLibsToInstallDirectory}/apron-gmp-0.9.11-sources.jar</sources>
+                          <packaging>jar</packaging>
+                          <createChecksum>true</createChecksum>
+                          <generatePom>true</generatePom>
+                      </configuration>
+                  </execution>
+                  <execution>
+                      <id>install-jgdsl</id>
+                      <phase>initialize</phase>
+                      <goals>
+                          <goal>install-file</goal>
+                      </goals>
+                      <configuration>
+                          <file>${externalLibsToInstallDirectory}/jgdsl-1.0.jar</file>
+                          <groupId>jgdsl</groupId>
+                          <artifactId>jgdsl</artifactId>
+                          <version>1.0</version>                 
+                          <sources>${externalLibsToInstallDirectory}/jgdsl-1.0-sources.jar</sources>
+                          <packaging>jar</packaging>
+                          <createChecksum>true</createChecksum>
+                          <generatePom>true</generatePom>
+                      </configuration>
+                  </execution>
+              </executions>
+          </plugin>
+      </plugins>
+      <pluginManagement>
+          <plugins>
+              <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+              <plugin>
+                  <groupId>org.eclipse.m2e</groupId>
+                  <artifactId>lifecycle-mapping</artifactId>
+                  <version>1.0.0</version>
+                  <configuration>
+                      <lifecycleMappingMetadata>
+                          <pluginExecutions>
+                              <pluginExecution>
+                                  <pluginExecutionFilter>
+                                      <groupId>
+                                          org.apache.maven.plugins
+                                      </groupId>
+                                      <artifactId>
+                                          maven-install-plugin
+                                      </artifactId>
+                                      <versionRange>
+                                          [2.5.1,)
+                                      </versionRange>
+                                      <goals>
+                                          <goal>install-file</goal>
+                                      </goals>
+                                  </pluginExecutionFilter>
+                                  <action>
+                                      <ignore></ignore>
+                                  </action>
+                              </pluginExecution>
+                          </pluginExecutions>
+                      </lifecycleMappingMetadata>
+                  </configuration>
+              </plugin>
+          </plugins>
+      </pluginManagement>
+  </build>
+  
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+</project>

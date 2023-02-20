@@ -1,0 +1,38 @@
+Info-Version: 0.3
+Compilation info for source file "bindead/detail/test/resources/src/c/crackaddr-example-good.c" that was compiled to "bindead/detail/test/resources/binary/x86-32/crackaddr-example-good-O0" on 2011-10-25-08:32:17
+--------------------------------------------------------------------------------
+
+System: Distributor ID:	Debian
+Description:	Debian GNU/Linux testing (wheezy)
+Release:	testing
+Codename:	wheezy
+Kernel: Linux 3.0.0-1-amd64 #1 SMP Sat Aug 27 16:21:11 UTC 2011 x86_64 unknown unknown GNU/Linux
+
+--------------------------------------------------------------------------------
+Toolchain
+--------------------------------------------------------------------------------
+Compiler: gcc (Debian 4.6.1-15) 4.6.1
+Optimization-Level: 0
+Compiler command line: "gcc -m32 -O0 -static bindead/detail/test/resources/src/c/crackaddr-example-good.c -o bindead/detail/test/resources/binary/x86-32/crackaddr-example-good-O0"
+
+Linker: GNU ld (GNU Binutils for Debian) 2.21.90.20111004
+Libc: ldd (Debian EGLIBC 2.13-21) 2.13
+
+--------------------------------------------------------------------------------
+Binary
+--------------------------------------------------------------------------------
+Machine: Intel 80386
+Type: executable
+Bits: 32
+Endianness: little
+Linking: static
+Symbol-Table: present
+Debug info: not present
+
+Security Measures:
+--------------------------------------------------------------------------------
+No-Execute bit (NX): yes
+Stack Canary: no
+Relocation Read-Only: no
+Global Offset Table (GOT) Read-Only: no
+Fortify Source: yes

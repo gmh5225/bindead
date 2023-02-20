@@ -1,0 +1,34 @@
+Info-Version: 0.3
+Compilation info for source file "instraliasing-simple.fasm" that was compiled to "instraliasing-simple.o" on 2011-09-15-14:11:25
+--------------------------------------------------------------------------------
+
+System: LSB Version:	core-2.0-amd64:core-2.0-noarch:core-3.0-amd64:core-3.0-noarch:core-3.1-amd64:core-3.1-noarch:core-3.2-amd64:core-3.2-noarch:core-4.0-amd64:core-4.0-noarch
+Distributor ID:	Ubuntu
+Description:	Ubuntu 11.04
+Release:	11.04
+Codename:	natty
+Kernel: Linux 2.6.38-11-generic #50-Ubuntu SMP Mon Sep 12 21:17:25 UTC 2011 x86_64 x86_64 x86_64 GNU/Linux
+
+--------------------------------------------------------------------------------
+Toolchain
+--------------------------------------------------------------------------------
+Assembler: flat assembler  version 1.69.31
+
+--------------------------------------------------------------------------------
+Binary
+--------------------------------------------------------------------------------
+Machine: Intel 80386
+Type: shared library
+Bits: 32
+Endianness: little
+Linking: dynamic
+Symbol-Table: present
+Debug info: not present
+
+Security Measures:
+--------------------------------------------------------------------------------
+No-Execute bit (NX): yes
+Stack Canary: no
+Relocation Read-Only: no
+Global Offset Table (GOT) Read-Only: no
+Fortify Source: no

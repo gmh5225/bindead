@@ -1,0 +1,52 @@
+<!--  This is a collection of old code that is long gone but might be useful to look up again
+someday or pick out things back into the project. Contains alos some test binaries that might
+be again useful someday. -->
+<project
+    xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>bindead</groupId>
+    <artifactId>bindead-toplevel</artifactId>
+    <version>0.0.80-SNAPSHOT</version>
+  </parent>
+  <artifactId>bindead-attic</artifactId> 
+  <name>Bindead-Attic</name>
+  <packaging>jar</packaging>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+  <dependencies>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>javalx</artifactId>
+      <version>{project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.jamesmurty.utils</groupId>
+      <artifactId>java-xmlbuilder</artifactId>
+      <version>0.4</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>binspot</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>binparse</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>rreil</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>bindead</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
+</project>

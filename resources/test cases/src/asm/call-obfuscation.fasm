@@ -1,0 +1,22 @@
+
+format elf
+
+section '.text' executable
+
+public main
+
+main:
+  lea esi, [callee]
+  call dispatch
+  ;unreachable
+  mov eax, 2
+  ret
+
+dispatch:
+  pop eax
+  push esi
+  ret
+
+callee:
+  mov eax, 1
+  ret

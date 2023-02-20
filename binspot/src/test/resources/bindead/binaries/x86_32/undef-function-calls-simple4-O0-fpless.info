@@ -1,0 +1,39 @@
+Info-Version: 0.3
+Compilation info for source file "undef-function-calls-simple4.c" that was compiled to "undef-function-calls-simple4-O0-fpless" on 2013-04-20-16:54:39
+--------------------------------------------------------------------------------
+
+System: LSB Version:	core-2.0-amd64:core-2.0-noarch:core-3.0-amd64:core-3.0-noarch:core-3.1-amd64:core-3.1-noarch:core-3.2-amd64:core-3.2-noarch:core-4.0-amd64:core-4.0-noarch:cxx-3.0-amd64:cxx-3.0-noarch:cxx-3.1-amd64:cxx-3.1-noarch:cxx-3.2-amd64:cxx-3.2-noarch:cxx-4.0-amd64:cxx-4.0-noarch:desktop-3.1-amd64:desktop-3.1-noarch:desktop-3.2-amd64:desktop-3.2-noarch:desktop-4.0-amd64:desktop-4.0-noarch:graphics-2.0-amd64:graphics-2.0-noarch:graphics-3.0-amd64:graphics-3.0-noarch:graphics-3.1-amd64:graphics-3.1-noarch:graphics-3.2-amd64:graphics-3.2-noarch:graphics-4.0-amd64:graphics-4.0-noarch:printing-3.2-amd64:printing-3.2-noarch:printing-4.0-amd64:printing-4.0-noarch:qt4-3.1-amd64:qt4-3.1-noarch
+Distributor ID:	Ubuntu
+Description:	Ubuntu 13.04
+Release:	13.04
+Codename:	raring
+Kernel: Linux 3.8.0-19-generic #29-Ubuntu SMP Wed Apr 17 18:16:28 UTC 2013 x86_64 x86_64 x86_64 GNU/Linux
+
+--------------------------------------------------------------------------------
+Toolchain
+--------------------------------------------------------------------------------
+Compiler: gcc (Ubuntu/Linaro 4.7.3-1ubuntu1) 4.7.3
+Optimization-Level: 0
+Compiler command line: "gcc -m32 -O0 -fomit-frame-pointer -o undef-function-calls-simple4-O0-fpless undef-function-calls-simple4.c"
+
+Linker: GNU ld (GNU Binutils for Ubuntu) 2.23.2
+Libc: ldd (Ubuntu EGLIBC 2.17-0ubuntu5) 2.17
+
+--------------------------------------------------------------------------------
+Binary
+--------------------------------------------------------------------------------
+Machine: Intel 80386
+Type: executable
+Bits: 32
+Endianness: little
+Linking: dynamic
+Symbol-Table: present
+Debug info: not present
+
+Security Measures:
+--------------------------------------------------------------------------------
+No-Execute bit (NX): yes
+Stack Canary: no
+Relocation Read-Only: yes
+Global Offset Table (GOT) Read-Only: no
+Fortify Source: no

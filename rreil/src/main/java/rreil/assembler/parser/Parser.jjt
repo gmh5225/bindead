@@ -1,0 +1,564 @@
+options
+{
+	STATIC=false;
+	DEBUG_PARSER=false;
+	ERROR_REPORTING=true;
+	MULTI=true;
+	VISITOR=true;
+	NODE_DEFAULT_VOID=true;
+	VISITOR_EXCEPTION="ParseException";
+}
+
+PARSER_BEGIN(RReilParser)
+
+package rreil.assembler.parser;
+
+import java.math.BigInteger;
+import rreil.assembler.parser.VarSize;
+import rreil.assembler.parser.VarSize.IntegerSize;
+import rreil.assembler.parser.VarSize.TemplateSize;
+import rreil.lang.RReilAddr; 
+
+@SuppressWarnings("unused")
+public class RReilParser
+{
+}
+
+PARSER_END(RReilParser)
+
+<*> SKIP :
+{
+	  " "
+	| "\t"
+	| "\n"
+	| "\r"
+	| <"//" (~["\n","\r"])* ("\n"|"\r"|"\r\n")>
+	| <"/*" (~["*"])* "*" (~["/"] (~["*"])* "*")* "/">
+}
+
+TOKEN : /* OPERATIONS */
+{
+	  < ADD: "add" >
+	| < SUB: "sub" >
+	| < MUL: "mul" >
+	| < DIV: "div" >
+	| < DIVS: "divs" >
+	| < MOD: "mod" >
+	| < SHL: "shl" >
+	| < SHR: "shr" >
+	| < SHRS: "shrs" >
+	| < XOR: "xor" >
+	| < OR: "or" >
+	| < AND: "and" >
+	| < CMPEQ: "cmpeq" >
+	| < CMPNEQ: "cmpneq" >
+	| < CMPLES: "cmples" >
+	| < CMPLEU: "cmpleu" >
+	| < CMPLTS: "cmplts" >
+	| < CMPLTU: "cmpltu" >
+    | < MOV: "mov" >
+	| < SIGNEXTEND: "sign-extend" >
+	| < CONVERT: "convert" >
+	| < LDM: "load" >
+	| < STM: "store" >
+	| < BRC: "brc" >
+    | < BRCI: "brci" >
+	| < BR: "br" >
+	| < CALL: "call" >
+	| < NATIVE: "native" >
+    | < RETURN: "return" >
+    | < HALT: "halt" >
+    | < NOP: "nop" >
+    | < ASSERT: "assert" >
+    | < POSINF: "+oo" >
+    | < NEGINF: "-oo" >
+}
+
+TOKEN : /* FUNCTIONS */
+{
+    < DEF: "def" >
+}
+
+TOKEN : /* STATEMENTS */
+{
+      < IF: "if" >
+    | < ELSE: "else" >
+    | < BLOCK_START: "{" >
+    | < BLOCK_END: "}" >
+}
+
+TOKEN : /* PRIMOPS */
+{
+      < PRIMOP: "prim" >
+}
+
+TOKEN : /* OPTIONS */
+{
+      < OPTION: "option" > : IN_OPTIONS_LHS
+}
+<IN_OPTIONS_LHS> TOKEN:
+{
+      < OPTION_ID: <LETTER2> (<LETTER2> | "_")* >
+    | < #LETTER2: ["a"-"z","A"-"Z"] >
+    | < OPTION_ASSIGN: "=" > : IN_OPTIONS_RHS
+}
+<IN_OPTIONS_RHS> TOKEN:
+{
+      < OPTION_VALUE: ((<LETTER3>)+ | <DECIMAL_LITERAL>) > : DEFAULT
+    | < #LETTER3: ["a"-"z","A"-"Z"] >
+}
+
+TOKEN : /* MAGIC/SPECIAL LITERAL VALUES FOR CONSTANTS OR SPECIAL VARIABLES */
+{
+      < REACHABLE: "REACHABLE" >
+    | < UNREACHABLE: "UNREACHABLE" >
+    | < WARNINGS: "#warnings" >  
+}
+
+TOKEN : /* LITERALS */
+{
+	  < DECIMAL_LITERAL: ("-")? (["0"-"9"])+ >
+	| < HEX_LITERAL: "0" ["x","X"] (["0"-"9","a"-"f","A"-"F"])+ >
+}
+
+TOKEN : /* IDENTIFIERS */
+{
+      < IDENTIFIER: <LETTER> (<LETTER>|<DIGIT>)* >
+	| < #LETTER: ["_","a"-"z","A"-"Z"] >
+	| < #DIGIT: ["0"-"9"] >
+}
+
+TOKEN : /* LABELS */
+{
+	  < LABEL: <LABEL_IDENTIFIER> ":" >
+	| < #LABEL_IDENTIFIER: <IDENTIFIER> >
+}
+
+
+TOKEN : /* RREIL Addresses */
+{
+     < ADDRESS_LITERAL: <HEX_LITERAL> (<HEX_SUBADDRESS_LITERAL>)? >  
+    | < #HEX_SUBADDRESS_LITERAL: "." (["0"-"9","a"-"f","A"-"F"]){2} >
+}
+
+/** Main production. */
+ASTModule Module() #Module : {}
+{
+	((PointerDeclaration())* (Option())* (((Statement())+) | ((NativeDefinition())+)) <EOF>)
+	{
+		return jjtThis;
+	}
+}
+
+ASTPtr PointerDeclaration() #Ptr : {}
+{
+	".@" Identifier() Size() "@" NumberOrArbitrary()
+	{
+		return jjtThis;
+	}
+}
+
+ASTOpt Option() #Opt : {}
+{
+    <OPTION> OptionID() <OPTION_ASSIGN> OptionValue()
+    {
+        return jjtThis;
+    }
+}
+
+void Statement() #Stmt : {}
+{
+	Label() | RReilAddress() ":" Instruction() | Instruction()
+}
+
+ASTInsn Instruction() #Insn : {}
+{
+	(	Add() Size() Variable() "," Rvalue() "," Rvalue()
+	|	Sub() Size() Variable() "," Rvalue() "," Rvalue()
+	|	Mul() Size() Variable() "," Rvalue() "," Rvalue()
+	|	Div() Size() Variable() "," Rvalue() "," Rvalue()
+	|	Divs() Size() Variable() "," Rvalue() "," Rvalue()
+	|	Mod() Size() Variable() "," Rvalue() "," Rvalue()
+	|	Shl() Size() Variable() "," Rvalue() "," Rvalue()
+	|	Shr() Size() Variable() "," Rvalue() "," Rvalue()
+	|	Shrs() Size() Variable() "," Rvalue() "," Rvalue()
+	|	Xor() Size() Variable() "," Rvalue() "," Rvalue()
+	|	Or() Size() Variable() "," Rvalue() "," Rvalue()
+	|	And() Size() Variable() "," Rvalue() "," Rvalue()
+	|	Cmpneq() Size() Variable() "," Rvalue() "," Rvalue()
+	|	Cmpeq() Size() Variable() "," Rvalue() "," Rvalue()
+	|	Cmples() Size() Variable() "," Rvalue() "," Rvalue()
+	|	Cmpleu() Size() Variable() "," Rvalue() "," Rvalue()
+	|	Cmplts() Size() Variable() "," Rvalue() "," Rvalue()
+	|	Cmpltu() Size() Variable() "," Rvalue() "," Rvalue()
+	|	Mov() Size() Variable() "," Rvalue()
+	|	SignExtend() Size() Size() Variable() "," Rvalue()
+	|	Convert() Size() Size() Variable() "," Rvalue()
+	|	Ldm() Size() Size() Variable() "," Rvalue()
+	|	Stm() Size() Size() Rvalue() "," Rvalue()
+	
+    |   Brci() Size() Rvalue() "," Rvalue()
+	|	Brc() Size() Rvalue() "," Rvalue()
+	|	Br() Size() Rvalue()
+	|	Call() Size() Rvalue()
+    |   CallNative()
+    |   CallPrimOp()
+    |   Return() Size() Rvalue()
+    |   Assert()
+    |   Nop()
+    |   Halt()
+    )
+	{
+		return jjtThis;
+	}
+}
+
+void Add() #Add : {} { <ADD> }
+void Sub() #Sub : {} { <SUB> }
+void Mul() #Mul : {} { <MUL> }
+void Div() #Div : {} { <DIV> }
+void Divs() #Divs : {} { <DIVS> }
+void Mod() #Mod : {} { <MOD> }
+void Shl() #Shl : {} { <SHL> }
+void Shr() #Shr : {} { <SHR> }
+void Shrs() #Shrs : {} { <SHRS> }
+void Xor() #Xor : {} { <XOR> }
+void Or() #Or : {} { <OR> }
+void And() #And : {} { <AND> }
+void Cmpneq() #Cmpneq : {} { <CMPNEQ> }
+void Cmpeq() #Cmpeq : {} { <CMPEQ> }
+void Cmples() #Cmples : {} { <CMPLES> }
+void Cmpleu() #Cmpleu : {} { <CMPLEU> }
+void Cmplts() #Cmplts : {} { <CMPLTS> }
+void Cmpltu() #Cmpltu : {} { <CMPLTU> }
+void Mov() #Mov : {} { <MOV> }
+void SignExtend() #SignExtend : {} { <SIGNEXTEND> }
+void Convert() #Convert : {} { <CONVERT> }
+void Ldm() #Ldm : {} { <LDM> }
+void Stm() #Stm : {} { <STM> }
+void Brci() #Brci : {} { <BRCI> }
+void Brc() #Brc : {} { <BRC> }
+void Br() #Br : {} { <BR> }
+void Call() #Call : {} { <CALL> }
+void Return() #Return : {} { <RETURN> }
+void Halt() #Halt : {} { <HALT> }
+void Nop() #Nop : {} { <NOP> }
+void Assert() #Assert : {} 
+{ 
+    <ASSERT> 
+    (
+        AssertionReachable()
+      | AssertionUnreachable()
+      | AssertionWarnings()
+      | AssertionComparison()
+    ) 
+}
+
+void AssertionReachable() #AssertionReachable : {} { <REACHABLE> }
+
+void AssertionUnreachable() #AssertionUnreachable : {} { <UNREACHABLE> }
+
+void AssertionWarnings() #AssertionWarnings : {} { <WARNINGS> "=" Number() }
+
+void AssertionComparison() #AssertionComparison : {} 
+{ 
+    Size() Rvalue() AssertionComparisonOperator() Rvalue() 
+}
+
+/* Comparison operators for the assertions */
+void AssertionComparisonOperator() #AssertionComparisonOperator: 
+{
+    Token t;
+}
+{
+    (t = "*+=" | t = "=" | t = "!=" | t = "<" | t = "<=" | t = "<u" | t = "<=u")
+    {
+        jjtThis.value = t.image;
+    }
+}
+
+void RReilAddress () #RReilAddress :
+{
+    Token t = null;
+}
+{
+/* using hex literals here leads to a conflict in RValue but that is ok, as we want the hex_literal to come first */
+    (t = <ADDRESS_LITERAL> | t = <HEX_LITERAL>)  
+    {
+        jjtThis.value = t.image;
+    }
+}
+
+void JumpTargetAddress () #JumpTargetAddress : {}
+{
+    RReilAddress() (":")?
+}
+ 
+/** Right-hand-side values */
+void Rvalue () #Rvalue : {}
+{
+	Variable() | NumberOrArbitrary() | LabelDeref() | Interval() | IntervalSet() | JumpTargetAddress()
+}
+
+void IntervalSet() #IntervalSet :
+{
+    Token t;
+}
+{
+    t = "{" (Interval() | Number()) ("," (Interval() | Number()))? "}"
+    {
+        jjtThis.value = t;
+    }
+}
+
+void Interval() #Interval : {}
+{
+  "[" IntervalBound() "," IntervalBound() "]"
+}
+
+void IntervalBound() #IntervalBound :
+{
+  Token n;
+}
+{
+  Number()
+| <POSINF> { jjtThis.value = null; }
+| <NEGINF> { jjtThis.value = null; }
+}
+
+void Variable() #Variable : {}
+{
+	Identifier() ("/" Number())?
+}
+
+void LabelDeref() #LabelDeref : {}
+{
+	Label()
+}
+
+/** A Size annotation */
+VarSize Size() #Size :
+{
+    Token t;
+	VarSize size;
+}
+{
+	(
+	   t = ".b"    { size = new IntegerSize(t, 8); }
+	 | t = ".w"    { size = new IntegerSize(t, 16); }
+	 | t = ".d"    { size = new IntegerSize(t, 32); }
+	 | t = ".q"    { size = new IntegerSize(t, 64); }
+	 | t = ".o"    { size = new IntegerSize(t, 128); }
+	 | t = ".z"    { size = new IntegerSize(t, 256); }
+     | "." ((t = <DECIMAL_LITERAL> { size = new IntegerSize(t, Integer.parseInt(t.image)); })
+          | (t = <IDENTIFIER> { size = new TemplateSize(t); }))
+	 | {}		{ size = VarSize.NOT_SET; }
+	)
+	{
+		jjtThis.value = size;
+		return size;
+	}
+}
+
+void NumberOrArbitrary() #IntegerOrNull :
+{
+	Token t;
+}
+{
+	t = <DECIMAL_LITERAL>
+	{
+		jjtThis.value = new BigInteger(t.image);
+	}
+|	t = <HEX_LITERAL>
+	{
+		jjtThis.value = new BigInteger(t.image.substring(2), 16);
+	}
+|	"?"
+	{
+		jjtThis.value = null;
+	}
+}
+
+void Number() #Integer :
+{
+	Token t;
+}
+{
+	t = <DECIMAL_LITERAL>
+	{
+		jjtThis.value = new BigInteger(t.image);
+	}
+|	t = <HEX_LITERAL>
+	{
+		jjtThis.value = new BigInteger(t.image.substring(2), 16);
+	}
+}
+
+/** An Identifier. */
+void Identifier() #Ident :
+{
+	Token t;
+}
+{
+	t = <IDENTIFIER>
+	{
+		jjtThis.value = t.image;
+	}
+}
+
+ASTLabel Label() #Label :
+{
+	Token t;
+}
+{
+	t = <LABEL>
+	{
+		// Drop the ":" suffix.
+		jjtThis.value = t.image.substring(0, t.image.length()-1);
+		return jjtThis;
+	}
+}
+
+/** If-else/While */
+void BlockStart() #BlockStart : {}
+{
+    <BLOCK_START>
+}
+void BlockEnd() #BlockEnd : {}
+{
+    <BLOCK_END>
+}
+
+void StatementBlock() #Block : {}
+{
+     BlockStart() (Statement())+ BlockEnd()
+   | Statement()
+}
+
+void IfElse() #IfElse : {}
+{
+    <IF> "(" Test() ")" StatementBlock() (<ELSE> StatementBlock())?
+}
+
+void Test() #Test : {}
+{
+      Number()
+    | Variable() Size()
+}
+
+
+/** Option productions */
+void OptionID() #OptID :
+{
+    Token t;
+}
+{
+    t = <OPTION_ID>
+    {
+        jjtThis.value = t.image;
+    }
+}
+
+void OptionValue() #OptVal :
+{
+    Token t;
+}
+{
+    t = <OPTION_VALUE>
+    {
+        jjtThis.value = t.image;
+    }
+}
+
+/** Natives */
+ASTCallNat CallNative() #CallNat :
+{
+}
+{
+    <NATIVE> "(" Arguments() ")" "=" NativeLabel() "(" Arguments() ")"
+    {
+        return jjtThis;
+    }
+}
+
+ASTNatDef NativeDefinition() #NatDef :
+{
+}
+{
+    <DEF> "(" Arguments() ")" "=" NativeLabel() NativeSizeParameters() "(" Arguments() ")" "{" (Statement())* "}"
+    {
+        return jjtThis;
+    }
+}
+ASTNatSizeParams NativeSizeParameters() #NatSizeParams :
+{
+}
+{
+    (("<" NativeSizeParameter() ("," NativeSizeParameter())* ">") | {})
+    {
+        return jjtThis;
+    }
+}
+
+ASTNatSizeParam NativeSizeParameter() #NatSizeParam :
+{
+    Token t;
+}
+{
+    t = <IDENTIFIER>
+    {
+        jjtThis.value = t.image;
+        return jjtThis;
+    }
+}
+
+ASTFunArgs Arguments() #FunArgs :
+{
+}
+{
+    ((Variable() Size() ("," Variable() Size())*) | {})
+    {
+        return jjtThis;
+    }
+}
+
+ASTNatLabel NativeLabel() #NatLabel :
+{
+    Token t;
+}
+{
+    t = <IDENTIFIER>
+    {
+        jjtThis.value = t.image;
+        return jjtThis;
+    }
+}
+
+
+/** PrimOps */
+ASTCallPrim CallPrimOp() #CallPrim :
+{
+}
+{
+    <PRIMOP> ("(" Arguments() ")" "=")? PrimOpLabel() ("(" Arguments() ")")?
+    {
+        return jjtThis;
+    }
+}
+
+ASTPrimLabel PrimOpLabel() #PrimLabel :
+{
+    Token t;
+}
+{
+      t = <IDENTIFIER>
+    {
+        jjtThis.value = t.image;
+        return jjtThis;
+    }
+    | t = <HALT>
+    {
+        jjtThis.value = t.image;
+        return jjtThis;
+    }
+}

@@ -1,0 +1,19 @@
+// static conditional forward jump to a constant address
+// indirect conditional backward jump through a register to a constant address
+
+entry:
+	mov.d r1, 10
+	sub.d r1, r1, 1
+	cmpltu.d NZF, 0, r1
+	mov.d r2, 10
+	mov.d r4, entry:
+	brc.d NZF, target:
+	add.d r3, r1, 1
+	add.d r2, r3, 1
+	add.d r1, r2, 1
+target:
+    brc.d NZF, r4
+	add.d r4, r1, 1
+exit:
+    mov.d r0, ?
+    return.d r0

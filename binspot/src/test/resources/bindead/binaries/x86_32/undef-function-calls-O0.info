@@ -1,0 +1,39 @@
+Info-Version: 0.3
+Compilation info for source file "undef-function-calls.c" that was compiled to "undef-function-calls-O0" on 2013-04-09-13:41:07
+--------------------------------------------------------------------------------
+
+System: LSB Version:	core-2.0-amd64:core-2.0-noarch:core-3.0-amd64:core-3.0-noarch:core-3.1-amd64:core-3.1-noarch:core-3.2-amd64:core-3.2-noarch:core-4.0-amd64:core-4.0-noarch
+Distributor ID:	Ubuntu
+Description:	Ubuntu 12.10
+Release:	12.10
+Codename:	quantal
+Kernel: Linux 3.5.0-27-generic #46-Ubuntu SMP Mon Mar 25 19:58:17 UTC 2013 x86_64 x86_64 x86_64 GNU/Linux
+
+--------------------------------------------------------------------------------
+Toolchain
+--------------------------------------------------------------------------------
+Compiler: gcc (Ubuntu/Linaro 4.7.2-2ubuntu1) 4.7.2
+Optimization-Level: 0
+Compiler command line: "gcc -m32 -std=c99 -O0 -o undef-function-calls-O0 undef-function-calls.c"
+
+Linker: GNU ld (GNU Binutils for Ubuntu) 2.22.90.20120924
+Libc: ldd (Ubuntu EGLIBC 2.15-0ubuntu20.1) 2.15
+
+--------------------------------------------------------------------------------
+Binary
+--------------------------------------------------------------------------------
+Machine: Intel 80386
+Type: executable
+Bits: 32
+Endianness: little
+Linking: dynamic
+Symbol-Table: present
+Debug info: not present
+
+Security Measures:
+--------------------------------------------------------------------------------
+No-Execute bit (NX): yes
+Stack Canary: no
+Relocation Read-Only: yes
+Global Offset Table (GOT) Read-Only: no
+Fortify Source: no

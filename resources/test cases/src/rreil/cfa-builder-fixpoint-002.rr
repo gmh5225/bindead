@@ -1,0 +1,23 @@
+// indirect conditional loop jump through a register
+// and indirect conditional forward jump through register
+
+entry:
+	mov.d r2, loop:
+	mov.d r1, 10
+loop:
+	sub.d r1, r1, 1
+	cmpltu.d NZF, 0, r1
+	brc.d NZF, r2
+	mov.d r3, target:
+	add.d r1, r3, 1
+	mov.1 NZF, 1
+	brc.d NZF, r1
+	sub.d r4, r1, 1
+target:
+	add.d r4, r1, 1
+	sub.d r4, r4, 0x10
+	mul.d r1, r4, 10
+exit:
+    mov.d r0, ?
+    return.d r0
+

@@ -1,0 +1,16 @@
+// eax should always be set alive as it is the return register
+entry:
+	mov.d edx,10
+	mov.d eax,0
+	cmpleu.d BE, edx, 1
+	brc.d BE, loopExit:
+loop:
+	sub.d edx,edx,1
+	add.d eax,eax,1
+	cmpltu.d NZF, 0, edx
+	brc.d NZF, loop:
+loopExit:
+	mov.d eax, eax
+exit:
+    mov.d r0, ?
+    return.d r0

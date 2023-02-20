@@ -1,0 +1,39 @@
+Info-Version: 0.3
+Compilation info for source file "recursion.c" that was compiled to "recursion-O0" on 2013-02-14-16:28:46
+--------------------------------------------------------------------------------
+
+System: LSB Version:	core-2.0-amd64:core-2.0-noarch:core-3.0-amd64:core-3.0-noarch:core-3.1-amd64:core-3.1-noarch:core-3.2-amd64:core-3.2-noarch:core-4.0-amd64:core-4.0-noarch
+Distributor ID:	Ubuntu
+Description:	Ubuntu 12.10
+Release:	12.10
+Codename:	quantal
+Kernel: Linux 3.5.0-24-generic #37-Ubuntu SMP Thu Feb 7 01:50:30 UTC 2013 x86_64 x86_64 x86_64 GNU/Linux
+
+--------------------------------------------------------------------------------
+Toolchain
+--------------------------------------------------------------------------------
+Compiler: gcc (Ubuntu/Linaro 4.7.2-2ubuntu1) 4.7.2
+Optimization-Level: 0
+Compiler command line: "gcc -std=c99 -O0 -o recursion-O0 recursion.c"
+
+Linker: GNU ld (GNU Binutils for Ubuntu) 2.22.90.20120924
+Libc: ldd (Ubuntu EGLIBC 2.15-0ubuntu20.1) 2.15
+
+--------------------------------------------------------------------------------
+Binary
+--------------------------------------------------------------------------------
+Machine: Advanced Micro Devices X86-64
+Type: executable
+Bits: 64
+Endianness: little
+Linking: dynamic
+Symbol-Table: present
+Debug info: not present
+
+Security Measures:
+--------------------------------------------------------------------------------
+No-Execute bit (NX): yes
+Stack Canary: no
+Relocation Read-Only: yes
+Global Offset Table (GOT) Read-Only: no
+Fortify Source: no

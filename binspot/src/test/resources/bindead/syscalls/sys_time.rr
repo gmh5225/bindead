@@ -1,0 +1,25 @@
+def (ret) = time (tloc) {
+/*
+void time(time_t* tloc) {
+    time_t i = get_seconds();
+    if (tloc) {
+        if (put_user(i,tloc)) {
+            return -EFAULT;
+        }
+    }
+    force_successful_syscall_return();
+    return i;
+}
+*/
+
+// time_t finally resolves to "long long",  which is 64bit on x86_32 and x86_64
+    mov.q i, [0,+oo]  // Guess positive value for get_seconds()
+    cmpeq LT, tloc, 0   //if (tloc) {
+    brc LT, else1:
+    // if (put_user(i,t)) return -EFAULT;
+    store.q.q tloc, i // put_user(i,t)
+    br end:
+    else1:
+    end:
+    mov.q ret, i
+}
