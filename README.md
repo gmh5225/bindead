@@ -1,4 +1,5 @@
 # Bindead
+https://bitbucket.org/mihaila/bindead/wiki/Introduction%20to%20RREIL
 
 Bindead is a static analyzer for binaries (machine code) developed at the Technical University of Munich at the [chair for programming language research](http://www2.in.tum.de/).
 It features a disassembler that translates machine code bits into an assembler like language (*RREIL* - Relational Reverse Engineering Intermediate Language) that in turn is then analyzed by the static analysis component using abstract interpretation. The analyzer allows to reason about the runtime behavior of a program and find potential bugs. To this end we perform a set of numeric and symbolic analyses on the program and are able to infer memory access bounds and various other numeric properties statically, i.e. without running the program.
